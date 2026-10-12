@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <!-- Elemento Principal -->
+  <xs:element name="mi_agenda">
+    <xs:complexType>
+      <xs:sequence>
+
+        <!-- Sección de Contactos -->
+        <xs:element name="directorio">
+          <xs:complexType>
+            <xs:sequence>
+              <!-- maxOccurs="unbounded" significa que puedes tener infinitos contactos -->
+              <xs:element name="contacto" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="nombre" type="xs:string"/>
+                    
+                    <!-- Regla: El teléfono DEBE tener exactamente 10 números -->
+                    <xs:element name="telefono">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:pattern value="\d{10}"/> 
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    
+                    <xs:element name="correo" type="xs:string"/>
+                  </xs:sequence>
+                  <xs:attribute name="id" type="xs:ID" use="required"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+        <!-- Sección de Notas -->
+        <xs:element name="cuaderno_notas">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="nota" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="titulo" type="xs:string"/>
+                    
+                    <!-- Regla: La fecha DEBE tener formato YYYY-MM-DD -->
+                    <xs:element name="fecha" type="xs:date"/>
+                    <xs:element name="contenido" type="xs:string"/>
+                  </xs:sequence>
+                  
+                  <xs:attribute name="id" type="xs:ID" use="required"/>
+                  
+                  <!-- Regla: La prioridad SOLO puede ser alta, media o baja -->
+                  <xs:attribute name="prioridad" use="required">
+                    <xs:simpleType>
+                      <xs:restriction base="xs:string">
+                        <xs:enumeration value="alta"/>
+                        <xs:enumeration value="media"/>
+                        <xs:enumeration value="baja"/>
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:attribute>
+
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

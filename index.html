@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Agenda</title>
+    <style>
+        /* Variables de colores minimalistas */
+        :root {
+            --bg-color: #fafafa;
+            --surface: #ffffff;
+            --text-main: #171717;
+            --text-muted: #737373;
+            --border: #e5e5e5;
+            --accent: #000000;
+            --danger: #dc2626;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 50px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .contenedor {
+            width: 100%;
+            max-width: 480px;
+        }
+
+        /* Cabecera */
+        .cabecera {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .cabecera h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        .btn-enlace {
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-main);
+            border: 1px solid var(--border);
+            padding: 8px 16px;
+            border-radius: 6px;
+            background: var(--surface);
+            transition: border-color 0.2s ease;
+        }
+
+        .btn-enlace:hover {
+            border-color: var(--accent);
+        }
+
+        /* Pestañas de navegación */
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 12px;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-main);
+            background-color: #f5f5f5;
+        }
+
+        .tab-btn.activo {
+            color: var(--surface);
+            background-color: var(--accent);
+        }
+
+        /* Cajas de los formularios */
+        .formulario-caja {
+            display: none; /* Ocultos por defecto */
+            background: var(--surface);
+            padding: 32px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .formulario-caja.activo {
+            display: block; /* Muestra solo el activo */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Elementos de formulario */
+        .grupo-input {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--text-main);
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-family: inherit;
+            font-size: 14px;
+            background-color: var(--bg-color);
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            background-color: var(--surface);
+            box-shadow: 0 0 0 3px rgba(0,0,0,0.05);
+        }
+
+        /* Botones de acción */
+        .btn-submit {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--accent);
+            color: var(--surface);
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: transform 0.1s ease, background-color 0.2s ease;
+        }
+
+        .btn-submit:active {
+            transform: scale(0.98);
+        }
+
+        .btn-rojo {
+            background-color: var(--surface);
+            color: var(--danger);
+            border: 1px solid var(--danger);
+        }
+        
+        .btn-rojo:hover {
+            background-color: #fef2f2;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="contenedor">
+        
+        <!-- Cabecera -->
+        <div class="cabecera">
+            <h1>Agenda</h1>
+            <a href="http://localhost:3000/api/agenda" target="_blank" class="btn-enlace">Ver Reporte ↗</a>
+        </div>
+
+        <!-- Controles de Pestañas -->
+        <div class="tabs">
+            <button class="tab-btn activo" onclick="cambiarTab('tab-altas', this)">Nueva Nota</button>
+            <button class="tab-btn" onclick="cambiarTab('tab-cambios', this)">Editar</button>
+            <button class="tab-btn" onclick="cambiarTab('tab-bajas', this)">Eliminar</button>
+        </div>
+
+        <!-- Formulario: ALTAS -->
+        <div id="tab-altas" class="formulario-caja activo">
+            <form id="formulario-nota">
+                <div class="grupo-input">
+                    <label>Título de la nota</label>
+                    <input type="text" id="titulo" placeholder="Ej. Proyecto Final" required>
+                </div>
+                <div class="grupo-input">
+                    <label>Fecha límite</label>
+                    <input type="date" id="fecha" required>
+                </div>
+                <div class="grupo-input">
+                    <label>Nivel de prioridad</label>
+                    <select id="prioridad">
+                        <option value="alta">Alta</option>
+                        <option value="media">Media</option>
+                        <option value="baja">Baja</option>
+                    </select>
+                </div>
+                <div class="grupo-input">
+                    <label>Detalles</label>
+                    <textarea id="contenido" rows="3" placeholder="Escribe el contenido aquí..." required></textarea>
+                </div>
+                <button type="submit" class="btn-submit">Guardar Nota</button>
+            </form>
+        </div>
+
+        <!-- Formulario: CAMBIOS -->
+        <div id="tab-cambios" class="formulario-caja">
+            <form id="formulario-actualizar">
+                <div class="grupo-input">
+                    <label>ID de la nota a editar</label>
+                    <input type="text" id="id-actualizar" placeholder="Ej. n1791..." required>
+                </div>
+                <div class="grupo-input">
+                    <label>Nuevo Título (Opcional)</label>
+                    <input type="text" id="nuevo-titulo">
+                </div>
+                <div class="grupo-input">
+                    <label>Nueva Prioridad (Opcional)</label>
+                    <select id="nueva-prioridad">
+                        <option value="">(Mantener original)</option>
+                        <option value="alta">Alta</option>
+                        <option value="media">Media</option>
+                        <option value="baja">Baja</option>
+                    </select>
+                </div>
+                <div class="grupo-input">
+                    <label>Nuevo Contenido (Opcional)</label>
+                    <textarea id="nuevo-contenido" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn-submit">Actualizar Cambios</button>
+            </form>
+        </div>
+
+        <!-- Formulario: BAJAS -->
+        <div id="tab-bajas" class="formulario-caja">
+            <form id="formulario-borrar">
+                <div class="grupo-input">
+                    <label>ID de la nota a eliminar</label>
+                    <input type="text" id="id-borrar" placeholder="Ej. n1791..." required>
+                </div>
+                <button type="submit" class="btn-submit btn-rojo">Eliminar Definitivamente</button>
+            </form>
+        </div>
+
+    </div>
+
+    <!-- Lógica de Pestañas y Conexión al Servidor -->
+    <script>
+        // Función para cambiar de pestañas visualmente
+        function cambiarTab(idTab, elementoBoton) {
+            // Ocultar todas las cajas
+            document.querySelectorAll('.formulario-caja').forEach(caja => caja.classList.remove('activo'));
+            // Quitar el color negro de todos los botones
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('activo'));
+            
+            // Mostrar la caja seleccionada y pintar su botón
+            document.getElementById(idTab).classList.add('activo');
+            elementoBoton.classList.add('activo');
+        }
+
+        // LÓGICA DE ALTAS (POST)
+        document.getElementById('formulario-nota').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const nuevaNota = {
+                titulo: document.getElementById('titulo').value,
+                fecha: document.getElementById('fecha').value,
+                prioridad: document.getElementById('prioridad').value,
+                contenido: document.getElementById('contenido').value
+            };
+
+            fetch('http://localhost:3000/api/notas', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(nuevaNota)
+            })
+            .then(res => res.text())
+            .then(mensaje => {
+                alert("Éxito: " + mensaje);
+                document.getElementById('formulario-nota').reset();
+            }).catch(error => alert('Error de conexión.'));
+        });
+
+        // LÓGICA DE CAMBIOS (PUT)
+        document.getElementById('formulario-actualizar').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const id = document.getElementById('id-actualizar').value;
+            const actualizaciones = {};
+            
+            if (document.getElementById('nuevo-titulo').value) actualizaciones.titulo = document.getElementById('nuevo-titulo').value;
+            if (document.getElementById('nueva-prioridad').value) actualizaciones.prioridad = document.getElementById('nueva-prioridad').value;
+            if (document.getElementById('nuevo-contenido').value) actualizaciones.contenido = document.getElementById('nuevo-contenido').value;
+
+            fetch('http://localhost:3000/api/notas/' + id, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(actualizaciones)
+            })
+            .then(res => res.text())
+            .then(mensaje => {
+                alert(mensaje);
+                document.getElementById('formulario-actualizar').reset();
+            }).catch(error => alert('Error de conexión.'));
+        });
+
+        // LÓGICA DE BAJAS (DELETE)
+        document.getElementById('formulario-borrar').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const id = document.getElementById('id-borrar').value;
+
+            fetch('http://localhost:3000/api/notas/' + id, {
+                method: 'DELETE'
+            })
+            .then(res => res.text())
+            .then(mensaje => {
+                alert(mensaje);
+                document.getElementById('formulario-borrar').reset();
+            }).catch(error => alert('Error de conexión.'));
+        });
+    </script>
+</body>
+</html>

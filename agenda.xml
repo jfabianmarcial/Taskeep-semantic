@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?xml-stylesheet type="text/xsl" href="agenda.xsl"?>
+<mi_agenda xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="agenda.xsd">
+  <directorio>
+    <contacto id="c1">
+      <nombre>José Fabián</nombre>
+      <telefono>2213534990</telefono>
+      <correo>jfabianmarcial@gmail.com</correo>
+    </contacto>
+  </directorio>
+  <cuaderno_notas>
+    <nota id="n1791761449699" prioridad="alta">
+      <titulo>estudiar xsl,xsd y dtd </titulo>
+      <fecha>2026-10-11</fecha>
+      <contenido>estudiar para el primer examen de semantica de la siguiente semana</contenido>
+    </nota>
+    <nota id="n1791762069017" prioridad="media">
+      <titulo>estudiar para examen de redes</titulo>
+      <fecha>2026-10-11</fecha>
+      <contenido>protocolos de rede, direccionamiento ip</contenido>
+    </nota>
+    <nota id="n1791764559215" prioridad="alta">
+      <titulo>entrega de proyecto final de semantica</titulo>
+      <fecha>2026-10-11</fecha>
+      <contenido>dentro de 3 semanas</contenido>
+    </nota>
+  </cuaderno_notas>
+</mi_agenda>
